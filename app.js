@@ -5,7 +5,10 @@ const app = express();
 
 //middleware
 app.use(express.json());
-
+app.use((req,res,next)=>{
+    req.currentTime = new Date().toISOString();
+    next();
+})
 
 const tours = JSON.parse(
     fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
@@ -14,6 +17,7 @@ const tours = JSON.parse(
 const getAllTours = (req, res) => {
     res.status(200).json({
         status: 'success',
+        requestedAt:req.currentTime,
         results: tours.length,
         data: {
             tours: tours
