@@ -1,9 +1,11 @@
 const express = require('express');
 const fs = require('fs');
+const morgan = require('morgan');
 
 const app = express();
 
-//middleware
+//1) middleware
+app.use(morgan('dev'))
 app.use(express.json());
 app.use((req,res,next)=>{
     req.currentTime = new Date().toISOString();
@@ -14,6 +16,8 @@ const tours = JSON.parse(
     fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 )
 
+
+// 2) route handlers
 const getAllTours = (req, res) => {
     res.status(200).json({
         status: 'success',
@@ -94,6 +98,8 @@ const deleteTour = (req, res) => {
     })
 };
 
+// 3) routes
+
 // app.get('/api/v1/tours', getAllTours);
 // app.get('/api/v1/tours/:id', getTour);
 // app.post('/api/v1/tours', createTour);
@@ -109,6 +115,7 @@ app.route('/api/v1/tours/:id')
     .patch(updateTour)
     .delete(deleteTour)
 
+// 4) app start
 
 const PORT = 3000;
 app.listen(PORT, () => {
