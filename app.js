@@ -59,6 +59,23 @@ app.get('/api/v1/tours/:id', (req, res) => {
     })
 })
 
+app.patch('/api/v1/tours/:id',(req,res)=>{
+    const id = req.params.id * 1;
+    if (id > tours.length - 1) {
+        return res.status(404).json({
+            status: 'fail',
+            message: 'Invalid ID'
+        })
+    }
+
+    res.status(200).json({
+        status:'success',
+        data:{
+            tour:'<Updated tour here !>'
+        }
+    })
+})
+
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`App is running on port ${PORT}`);
