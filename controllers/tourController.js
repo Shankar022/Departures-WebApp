@@ -5,15 +5,15 @@ const Tour = require('./../models/tourModel')
 
 exports.getAllTours = (req, res) => {
     res.status(200).json({
-      status: 'success',
-      requestedAt: req.currentTime,
-      // results: tours.length,
-      // data: {
-      //   tours: tours,
-      // },
+        status: 'success',
+        requestedAt: req.currentTime,
+        // results: tours.length,
+        // data: {
+        //   tours: tours,
+        // },
     });
-  };
-  
+};
+
 exports.getTour = (req, res) => {
     // console.log(req.params);
     // /api/v1/tours/:id/:x?
@@ -28,35 +28,44 @@ exports.getTour = (req, res) => {
     //   },
     // });
 };
-  
-exports.createTour = (req, res) => {
-    // to get all data in the req object from the request we should use middleware.
-    res.status(201).json({
-        status: 'success',
-        // data: {
-        //     tour: newTour,
-        // },
-    });
-  };
-  
+
+exports.createTour = async (req, res) => {
+    try {
+        // const newTour = new Tour({});
+        // newTour.save()
+        const newTour = await Tour.create(req.body);
+        res.status(201).json({
+            status: 'success',
+            data: {
+                tour: newTour,
+            },
+        });
+    } catch (err) {
+        res.status(400).json({
+            status: 'fail',
+            message: 'Invalid data sent!'
+        })
+    }
+};
+
 
 exports.updateTour = (req, res) => {
     const id = req.params.id * 1;
 
     res.status(200).json({
-      status: 'success',
-      data: {
-        tour: '<Updated tour here !>',
-      },
+        status: 'success',
+        data: {
+            tour: '<Updated tour here !>',
+        },
     });
-  };
-  
-  
+};
+
+
 exports.deleteTour = (req, res) => {
     const id = req.params.id * 1;
-   
+
     res.status(204).json({
-      status: 'success',
-      data: null,
+        status: 'success',
+        data: null,
     });
-  };
+};
