@@ -3,30 +3,40 @@ const Tour = require('./../models/tourModel')
 
 // CONTROLLER FUNCTIONS
 
-exports.getAllTours = (req, res) => {
-    res.status(200).json({
-        status: 'success',
-        requestedAt: req.currentTime,
-        // results: tours.length,
-        // data: {
-        //   tours: tours,
-        // },
-    });
+exports.getAllTours = async (req, res) => {
+    try {
+        const tours = await Tour.find();
+        res.status(200).json({
+            status: 'success',
+            results: tours.length,
+            data: {
+                tours,
+            },
+        });
+    }catch (err) {
+        res.send(400).json({
+            status:'fail',
+            message: err
+        });
+    }
 };
 
-exports.getTour = (req, res) => {
-    // console.log(req.params);
-    // /api/v1/tours/:id/:x?
-    // id is required and x is optional parameter
-    const id = req.params.id * 1;
-    // const tour = tours.find((ele) => ele.id === id);
-    //
-    //   res.status(200).json({
-    //   status: 'success',
-    //   data: {
-    //     tour: tour,
-    //   },
-    // });
+exports.getTour = async (req, res) => {
+   try{
+       const tour = await Tour.findById(req.params.id);
+       // Tour.findOne({ _id: req.params.id })
+       res.status(200).json({
+           status: 'success',
+           data: {
+               tour
+           },
+       });
+   }catch (err){
+       res.status(400).json({
+           status: 'fail',
+           message: 'Invalid data sent!'
+       })
+   }
 };
 
 exports.createTour = async (req, res) => {
