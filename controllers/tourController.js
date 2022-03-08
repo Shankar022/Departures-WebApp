@@ -6,8 +6,9 @@ const APIFeatures = require('./../utils/apiFeatures');
 exports.getAllTours = async (req, res) => {
   try {
     const features = new APIFeatures(Tour.find(), req.query)
-        .filter();
-
+        .filter()
+        .sort();
+    console.log(req.query)
     const tours = await features.query;
     res.status(200).json({
       status: 'success',

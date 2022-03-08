@@ -5,7 +5,7 @@ class APIFeatures {
     }
 
     filter = () => {
-        const queryObj = { ...this.queryString };
+        const queryObj = {...this.queryString};
         const excludedFields = ['page', 'sort', 'limit', 'fields'];
         excludedFields.forEach((ele) => delete queryObj[ele]);
 
@@ -14,6 +14,16 @@ class APIFeatures {
 
         //https://thecodebarbarian.com/how-find-works-in-mongoose.html => how find works
         this.query = this.query.find(JSON.parse(queryStr));
+        return this;
+    }
+
+    sort = () => {
+        if(this.queryString.sort){
+            const sortBy = this.queryString.sort.split(',').join(' ');
+            this.query = this.query.sort(sortBy);
+        }else{
+            this.query = this.query.sort('-createdAt');
+        }
         return this;
     }
 }
