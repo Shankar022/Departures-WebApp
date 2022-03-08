@@ -1,24 +1,14 @@
 const Tour = require('./../models/tourModel');
+const APIFeatures = require('./../utils/apiFeatures');
 
 // CONTROLLER FUNCTIONS
 
 exports.getAllTours = async (req, res) => {
   try {
-    // const tours = await Tour.find({
-    //   duration: 5,
-    //   difficulty: 'easy',
-    // });
+    const features = new APIFeatures(Tour.find(), req.query)
+        .filter();
 
-    // const tours = await Tour.find()
-    //   .where('duration')
-    //   .equals(5)
-    //   .where('difficulty')
-    //   .equals('easy');
-    const queryObj = { ...req.query };
-    const excludedFileds = ['page', 'sort', 'limit', 'feilds'];
-    excludedFileds.forEach((ele) => delete queryObj[ele]);
-
-    const tours = await Tour.find(queryObj);
+    const tours = await features.query;
     res.status(200).json({
       status: 'success',
       results: tours.length,
@@ -27,7 +17,7 @@ exports.getAllTours = async (req, res) => {
       },
     });
   } catch (err) {
-    res.send(400).json({
+    res.send(404).json({
       status: 'fail',
       message: err,
     });
