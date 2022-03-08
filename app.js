@@ -6,15 +6,19 @@ const userRouter = require('./routes/userRoutes');
 
 const app = express();
 
-//1) middleware
-app.use(morgan('dev'));
+//1) MIDDLEWARE
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+
 app.use(express.json());
+app.use(express.static(`${__dirname}/public`)); // whatever in the specified folder, can access in root route
 app.use((req, res, next) => {
   req.currentTime = new Date().toISOString();
   next();
 });
 
-// 3) routes
+// 3) ROUTES
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
