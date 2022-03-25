@@ -4,12 +4,13 @@ dotenv.config({ path: './config.env' });
 const app = require('./app');
 const mongoose = require('mongoose');
 
+
+// CONNECT TO DB
 const mongoDB = process.env.DATABASE.replace(
   '<PASSWORD>',
   process.env.DATABASE_PASSWORD
 );
 
-// CONNECT TO DB
 mongoose
   .connect(mongoDB, {
     useNewUrlParser: true,
@@ -19,12 +20,12 @@ mongoose
   })
   .then(() => {
     //console.log(conn.connections);
-    console.log('DB connection successful !');
+    console.log('DB connection successful ✔✔✔');
   });
 
 
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`App is running on port ${port}`);
+  console.log(`App is running on port ${port} ...`);
 });
