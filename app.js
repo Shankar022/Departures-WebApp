@@ -18,9 +18,18 @@ app.use((req, res, next) => {
   next();
 });
 
-// 3) ROUTES
 
+// 3) ROUTES
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
+
+// For all UNHANDLED ROUTES
+app.all('*',(req,res,next)=>{
+  res.status(404).json({
+    status:'Fail ❌',
+    message: `Can't find ${req.originalUrl}`
+  })
+  next();
+})
 
 module.exports = app;
